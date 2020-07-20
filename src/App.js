@@ -25,8 +25,16 @@ function App() {
     })
   }
 
+  useEffect(() => {
+    fetchRover();
+    const refreshBoardInterval = setInterval(() => {
+      fetchRover();
+    }, 2000);
+    return () => clearInterval(refreshBoardInterval);
+  }, []);
 
   const handleMove = () => {
+
     move({command: "M"}).then((newRover) => {
       setRover(fetchRover);
     }).catch();

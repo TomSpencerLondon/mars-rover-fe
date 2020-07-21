@@ -8,54 +8,47 @@ const height = 10;
 
 function App() {
 
-  const [rover, setRover] = useState({
-    position: {
-      x: 0,
-      y: 0
-    },
-    direction: "N",
-    blocked: false
-  });
+  const [rovers, setRovers] = useState([]);
 
-  const fetchRover = () => {
-    getRover().then((roverResponse) => {
-      setRover(roverResponse);
-    }).catch((err) => {
-      console.log(err);
-    })
+  const [grid, setGrid] = useState([]);
+
+  const fetchRovers = () => {
+    fetch("http://localhost:8080/rover", {method: "POST", headers: {
+      'Content-Type': 'application/json'
+      }}).then((res) => res.json()).then((response) => {
+        setRovers(response);
+        console.log(response, "this is the response in fetchRovers")
+    }).then(() => drawGrid());
   }
 
   useEffect(() => {
-    fetchRover();
-    const refreshBoardInterval = setInterval(() => {
-      fetchRover();
-    }, 2000);
-    return () => clearInterval(refreshBoardInterval);
+    console.log("This is running");
+    fetchRovers();
   }, []);
 
-  const handleMove = () => {
-
-    move({command: "M"}).then((newRover) => {
-      setRover(fetchRover);
-    }).catch();
-  }
-
-  const [grid, setGrid] = useState(() => {
+  function drawGrid() {
     const rows = [];
-    for (let i = 0; i < width; i++){
+    let isEmpty = true;
+
+    for (let i = 0; i < width; i++) {
       let row = [];
-      for (let j = 0; j < height; j++){
-        if ((rover.position.x === j) && (rover.position.y === height - i - 1)){
-          row.push(1);
-        }else{
+      for (let j = 0; j < height; j++) {
+        rovers.forEach(r => {
+          if ((r.position.x === j) && (r.position.y === height - i - 1)){
+            row.push(1);
+            isEmpty = false;
+          }
+        })
+        if(isEmpty){
           row.push(0);
         }
       }
+
       rows.push(row);
     }
+    setGrid(rows);
     return rows;
-  });
-
+  }
 
   return (
     <>

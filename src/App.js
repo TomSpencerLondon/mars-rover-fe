@@ -13,9 +13,7 @@ function App() {
   const [grid, setGrid] = useState([]);
 
   const fetchRovers = () => {
-    fetch("http://localhost:8080/rover", {method: "POST", headers: {
-      'Content-Type': 'application/json'
-      }}).then((res) => res.json()).then((response) => {
+    postRover().then((response) => {
         setRovers(response);
         console.log(response, "this is the response in fetchRovers")
     }).then(() => drawGrid());

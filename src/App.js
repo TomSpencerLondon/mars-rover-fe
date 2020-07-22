@@ -7,16 +7,26 @@ import Button from "@material-ui/core/Button";
 
 const width = 10;
 const height = 10;
+let obstacles = [];
 
 function App() {
+
   const [grid, setGrid] = useState([]);
-  const [obstacles, setObstacles] = useState([]);
 
   useEffect(() => {
-    getObstacles().then((res) => {
-      setObstacles(res);
-    }).then(() => fetchRovers());
+    fetchRoversAndObstacles();
   }, []);
+
+  const fetchRoversAndObstacles = () => {
+    let roverResponse;
+
+    getRover().then((res) => {
+      roverResponse = res;
+    }).then(() => getObstacles()).then((res) => obstacles = res).then(() => {
+      let uiGrid = computeGrid(roverResponse);
+      setGrid(uiGrid);
+    })
+  }
 
   const fetchRovers = () => {
     getRover().then((res) => {
@@ -75,9 +85,9 @@ function App() {
     });
   }
 
-  const computeGrid = (response) => {
+  const computeGrid = (roverResponse) => {
     const rows = [];
-    let rovers = response;
+    let rovers = roverResponse;
 
     for (let i = 0; i < width; i++) {
       let row = [];
@@ -94,6 +104,16 @@ function App() {
     }
 
     return rows;
+  }
+
+  function getCellColor(i, k) {
+    if (grid[i][k] === 2) {
+      return 'green';
+    }else if (grid[i][k] === 1) {
+      return 'red';
+    }else {
+      return undefined;
+    }
   }
 
   return (
@@ -119,7 +139,7 @@ function App() {
                  style={{
                    width: 20,
                    height: 20,
-                   backgroundColor: grid[i][k] ? 'red' : 'blue',
+                   backgroundColor: getCellColor(i, k),
                    border: 'solid 1px black'
                  }}/>
           ))

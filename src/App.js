@@ -28,13 +28,6 @@ function App() {
     })
   }
 
-  const fetchRovers = () => {
-    getRover().then((res) => {
-      let uiGrid = computeGrid(res);
-      setGrid(uiGrid);
-    });
-  }
-
   const uiNewRover = () => {
     postRover().then((res) => {
       let uiGrid = computeGrid(res);

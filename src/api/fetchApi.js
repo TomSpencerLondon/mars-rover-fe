@@ -16,6 +16,5 @@ export const fetchWrapper = async ({
     payload.body = JSON.stringify(body);
   }
   const response = await fetch("http://localhost:8080/" + endpoint, payload);
-    console.log(response, "This is the response from fetch in fetch");
-    return handleResponse(response);
+  return handleResponse(response);
 };

@@ -1,56 +1,103 @@
-import React, {useState, useEffect }  from 'react';
+import React, {useEffect, useState} from 'react';
 import ContainedButtons from "./Button";
 
-import { move, getRover, moveLeft, moveRight, postRover } from './api/marsRoverApi';
+import {getRover, move, moveLeft, moveRight, postRover} from './api/marsRoverApi';
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
 
 const width = 10;
 const height = 10;
 
 function App() {
-
-  const [rovers, setRovers] = useState([]);
-
   const [grid, setGrid] = useState([]);
 
   const fetchRovers = () => {
-    postRover().then((response) => {
-        setRovers(response);
-        console.log(response, "this is the response in fetchRovers")
-    }).then(() => drawGrid());
+    getRover().then((res) => {
+      let uiGrid = computeGrid(res);
+      setGrid(uiGrid);
+    });
+  }
+
+  const uiNewRover = () => {
+    postRover().then((res) => {
+      let uiGrid = computeGrid(res);
+      setGrid(uiGrid);
+    });
+  }
+
+  const uiMoveRover = () => {
+    move().then((res) => {})
+      .then(() => {
+        return getRover()
+      }).then((res) => {
+        let uiGrid = computeGrid(res);
+        setGrid(uiGrid);
+      });
+  }
+
+  const uiMoveLeft = () => {
+    moveLeft().then((res) => {})
+      .then(() => {
+        return getRover()
+      }).then((res) => {
+      let uiGrid = computeGrid(res);
+      setGrid(uiGrid);
+    });
+  }
+
+  const uiMoveRight = () => {
+    moveRight().then((res) => {})
+      .then(() => {
+        return getRover()
+      }).then((res) => {
+      let uiGrid = computeGrid(res);
+      setGrid(uiGrid);
+    });
   }
 
   useEffect(() => {
-    console.log("This is running");
     fetchRovers();
   }, []);
 
-  function drawGrid() {
+  const computeGrid = (response) => {
     const rows = [];
-    let isEmpty = true;
+    let rovers = response;
 
     for (let i = 0; i < width; i++) {
       let row = [];
       for (let j = 0; j < height; j++) {
-        rovers.forEach(r => {
-          if ((r.position.x === j) && (r.position.y === height - i - 1)){
-            row.push(1);
-            isEmpty = false;
-          }
-        })
-        if(isEmpty){
+        if (hasRover(i, j, rovers)){
+          row.push(1);
+        }else{
           row.push(0);
         }
       }
-
       rows.push(row);
     }
-    setGrid(rows);
+
     return rows;
+  }
+
+  const hasRover = (i, j, rovers) => {
+    return rovers.some(r => {
+      return (r.position.x === j) && (r.position.y === height - i - 1);
+    });
+
   }
 
   return (
     <>
-      <div style={{
+      <Box
+        height={"100vh"}
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Button variant="contained" color="secondary" onClick={() => uiNewRover()}>
+          Add Rover
+        </Button>
+        <div style={{
         display: 'grid',
         gridTemplateColumns: `repeat(${height}, 20px)`,
         margin: 25
@@ -61,13 +108,14 @@ function App() {
                  style={{
                    width: 20,
                    height: 20,
-                   backgroundColor: grid[i][k] ? 'pink' : undefined,
+                   backgroundColor: grid[i][k] ? 'red' : undefined,
                    border: 'solid 1px black'
                  }}/>
           ))
         )}
       </div>
-      <ContainedButtons move={move}/>
+      <ContainedButtons moveRover={uiMoveRover} moveLeft={uiMoveLeft} moveRight={uiMoveRight}/>
+      </Box>
     </>
   );
 }

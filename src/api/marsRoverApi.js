@@ -20,3 +20,7 @@ export const moveRight = () => {
   return fetchWrapper({ endpoint: "direction/R", method: "POST"})
 }
 
+export const getObstacles = () => {
+  return fetchWrapper({ endpoint: "obstacles", method: "GET"})
+}
+

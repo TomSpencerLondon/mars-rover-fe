@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 const width = 10;
 const height = 10;
 let obstacles = [];
+let selectedRovers = [];
 
 function App() {
 
@@ -49,33 +50,42 @@ function App() {
   }
 
   const uiMoveRover = () => {
-    move().then((res) => {})
-      .then(() => {
-        return getRover()
-      }).then((res) => {
+    if (selectedRovers && selectedRovers.length) {
+
+      move(selectedRovers).then((res) => {
+      })
+        .then(() => {
+          return getRover()
+        }).then((res) => {
         let uiGrid = computeGrid(res);
         setGrid(uiGrid);
       });
+    }
   }
 
   const uiMoveLeft = () => {
-    moveLeft().then((res) => {})
-      .then(() => {
-        return getRover()
-      }).then((res) => {
-      let uiGrid = computeGrid(res);
-      setGrid(uiGrid);
-    });
+    if (selectedRovers && selectedRovers.length){
+      moveLeft(selectedRovers).then((res) => {})
+        .then(() => {
+          return getRover()
+        }).then((res) => {
+        let uiGrid = computeGrid(res);
+        setGrid(uiGrid);
+      });
+    }
   }
 
   const uiMoveRight = () => {
-    moveRight().then((res) => {})
-      .then(() => {
-        return getRover()
-      }).then((res) => {
-      let uiGrid = computeGrid(res);
-      setGrid(uiGrid);
-    });
+    if (selectedRovers && selectedRovers.length) {
+      moveRight(selectedRovers).then((res) => {
+      })
+        .then(() => {
+          return getRover()
+        }).then((res) => {
+        let uiGrid = computeGrid(res);
+        setGrid(uiGrid);
+      });
+    }
   }
 
   const computeGrid = (roverResponse) => {
@@ -106,7 +116,7 @@ function App() {
     if (grid[i][k].type === 'obstacle') {
       return 'green';
     }else if (grid[i][k].type === 'rover') {
-      if (grid[i][k].selected === true){
+      if (selectedRovers.includes(grid[i][k].id)){
         return 'red';
       } else {
         return 'silver';
@@ -120,9 +130,16 @@ function App() {
     let l = event.currentTarget.dataset.x;
     let m = event.currentTarget.dataset.y;
     const newGrid = JSON.parse(JSON.stringify(grid));
-
-    if (newGrid[l][m].type === 'rover'){
-      newGrid[l][m].selected = !newGrid[l][m].selected
+    let rover = newGrid[l][m];
+    if (rover.type === 'rover'){
+      rover.selected = !rover.selected
+      if (rover.selected === true){
+        selectedRovers.push(rover.id);
+      } else {
+        selectedRovers = selectedRovers.filter((id) => {
+          return id !== rover.id
+        });
+      }
     }
 
     setGrid(newGrid);

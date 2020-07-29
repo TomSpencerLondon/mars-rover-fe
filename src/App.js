@@ -36,7 +36,7 @@ function App() {
   }
 
   const hasRover = (i, j, rovers) => {
-    return rovers.some(r => {
+    return rovers.find(r => {
       return (r.position.x === j) && (r.position.y === height - i - 1);
     });
   }
@@ -85,10 +85,13 @@ function App() {
     for (let i = 0; i < width; i++) {
       let row = [];
       for (let j = 0; j < height; j++) {
-        if (hasRover(i, j, rovers)){
-          row.push(1);
+        let rover = hasRover(i, j, rovers);
+
+        if (rover !== undefined){
+          rover.type = 'rover';
+          row.push(rover);
         }else if (hasObstacles(i, j)){
-          row.push(2);
+          row.push({type: 'obstacle'});
         }else{
           row.push(0);
         }
@@ -99,13 +102,21 @@ function App() {
     return rows;
   }
 
-  function getCellColor(i, k) {
-    if (grid[i][k] === 2) {
+  const getCellColor = (i, k) => {
+    if (grid[i][k].type === 'obstacle') {
       return 'green';
-    }else if (grid[i][k] === 1) {
-      return 'red';
+    }else if (grid[i][k].type === 'rover') {
+      return 'silver';
     }else {
       return undefined;
+    }
+  }
+
+  const getRoverNumber = (i, k) => {
+    let rover = grid[i][k];
+    console.log(rover);
+    if (rover.position !== undefined) {
+      return rover.id;
     }
   }
 
@@ -134,7 +145,9 @@ function App() {
                    height: 20,
                    backgroundColor: getCellColor(i, k),
                    border: 'solid 1px black'
-                 }}/>
+                 }}>
+              {/*{ getRoverNumber(i, k) }*/}
+            </div>
           ))
         )}
       </div>

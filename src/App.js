@@ -93,7 +93,7 @@ function App() {
         }else if (hasObstacles(i, j)){
           row.push({type: 'obstacle'});
         }else{
-          row.push(0);
+          row.push({type: 'empty'});
         }
       }
       rows.push(row);
@@ -106,18 +106,26 @@ function App() {
     if (grid[i][k].type === 'obstacle') {
       return 'green';
     }else if (grid[i][k].type === 'rover') {
-      return 'silver';
+      console.log("This is type rover");
+      console.log(grid[i][k]);
+      if (grid[i][k].selected === true){
+        return 'red';
+      } else {
+        return 'silver';
+      }
     }else {
       return undefined;
     }
   }
 
-  const getRoverNumber = (i, k) => {
-    let rover = grid[i][k];
-    console.log(rover);
-    if (rover.position !== undefined) {
-      return rover.id;
+  const handleRoverClick = (event) => {
+    let j = event.currentTarget.dataset.x;
+    let k = event.currentTarget.dataset.y;
+
+    if(grid[j][k].type === 'rover'){
+      grid[j][k].selected = true;
     }
+    setGrid(grid);
   }
 
   return (
@@ -140,13 +148,16 @@ function App() {
         { grid.map((rows, i) =>
           rows.map((col, k) => (
             <div key={`${i}-${k}`}
+                 data-x={`${i}`}
+                 data-y={`${k}`}
                  style={{
                    width: 20,
                    height: 20,
                    backgroundColor: getCellColor(i, k),
-                   border: 'solid 1px black'
-                 }}>
-              {/*{ getRoverNumber(i, k) }*/}
+                   border: 'solid 1px black',
+                 }}
+                 onClick={ handleRoverClick }
+            >
             </div>
           ))
         )}

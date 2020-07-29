@@ -106,8 +106,6 @@ function App() {
     if (grid[i][k].type === 'obstacle') {
       return 'green';
     }else if (grid[i][k].type === 'rover') {
-      console.log("This is type rover");
-      console.log(grid[i][k]);
       if (grid[i][k].selected === true){
         return 'red';
       } else {
@@ -119,13 +117,15 @@ function App() {
   }
 
   const handleRoverClick = (event) => {
-    let j = event.currentTarget.dataset.x;
-    let k = event.currentTarget.dataset.y;
+    let l = event.currentTarget.dataset.x;
+    let m = event.currentTarget.dataset.y;
+    const newGrid = JSON.parse(JSON.stringify(grid));
 
-    if(grid[j][k].type === 'rover'){
-      grid[j][k].selected = true;
+    if (newGrid[l][m].type === 'rover'){
+      newGrid[l][m].selected = !newGrid[l][m].selected
     }
-    setGrid(grid);
+
+    setGrid(newGrid);
   }
 
   return (

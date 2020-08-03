@@ -12,6 +12,10 @@ export const postRover = () => {
   return fetchWrapper({ endpoint: "rover", method: "POST" })
 }
 
+export const deleteRovers = () => {
+  return fetchWrapper({endpoint: "delete/rovers", method: "POST" })
+}
+
 export const moveLeft = (selectedRovers) => {
   return fetchWrapper({ endpoint: `direction/L/${selectedRovers.join(",")}`, method: "POST"})
 }

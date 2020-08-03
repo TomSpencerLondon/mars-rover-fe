@@ -1,16 +1,26 @@
 import React, {useEffect, useState} from 'react';
 import ContainedButtons from "./Button";
 
-import {getObstacles, getRover, move, moveLeft, moveRight, postRover} from './api/marsRoverApi';
+import {getObstacles, getRover, move, moveLeft, moveRight, postRover, deleteRovers } from './api/marsRoverApi';
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
+import {makeStyles} from "@material-ui/core/styles";
 
 const width = 10;
 const height = 10;
 let obstacles = [];
 let selectedRovers = [];
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+  },
+}));
+
 function App() {
+  const classes = useStyles();
 
   const [grid, setGrid] = useState([]);
 
@@ -34,6 +44,14 @@ function App() {
       let uiGrid = computeGrid(res);
       setGrid(uiGrid);
     });
+  }
+
+  const uiDeleteRovers = () => {
+    deleteRovers().then((res) => {
+      selectedRovers = [];
+      let uiGrid = computeGrid(res);
+      setGrid(uiGrid);
+    })
   }
 
   const hasRover = (i, j, rovers) => {
@@ -154,9 +172,14 @@ function App() {
         alignItems="center"
         justifyContent="center"
       >
-        <Button variant="contained" color="secondary" onClick={() => uiNewRover()}>
-          Add Rover
-        </Button>
+        <div className={classes.root}>
+          <Button variant="contained" color="primary" onClick={() => uiDeleteRovers()}>
+            Clear Grid
+          </Button>
+          <Button variant="contained" color="secondary" onClick={() => uiNewRover()}>
+            Add Rover
+          </Button>
+        </div>
         <div style={{
         display: 'grid',
         gridTemplateColumns: `repeat(${height}, 20px)`,

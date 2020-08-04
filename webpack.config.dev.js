@@ -9,7 +9,7 @@ module.exports = {
   entry: './src/index.js',
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.API_URL': JSON.stringify('http://localhost:8080')
+      'process.env.API_URL': JSON.stringify('http://localhost:5000')
     }),
     new HtmlWebpackPlugin({
       title: 'Mars Rover',

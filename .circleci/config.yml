@@ -21,12 +21,7 @@ jobs:
           paths:
             - ./node_modules
 
-      - run: yarn lint
-
-      - run: yarn test
-
-      - run: yarn build:prod
-
+      - run: yarn build
 
   deploy:
     docker:
@@ -54,6 +49,8 @@ jobs:
           key: dependency-cache-{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
+
+      - run: yarn build
 
       - run: aws s3 sync build/ s3://mars-rover-fe
 

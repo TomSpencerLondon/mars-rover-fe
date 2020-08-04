@@ -24,7 +24,7 @@ module.exports = {
       filename: '[name].[contenthash].css'
     }),
     new HtmlWebpackPlugin({
-      title: 'Retropolis',
+      title: 'Mars Rover',
       template: 'public/index.html',
       favicon: './public/favicon.ico',
       minify: {

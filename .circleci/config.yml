@@ -55,15 +55,6 @@ jobs:
           paths:
             - ./node_modules
 
-      - run: yarn lint
-
-      - run: yarn test:coverage
-
-      - codecov/upload:
-          file: ./coverage/coverage-final.json
-
-      - run: yarn build:prod
-
       - run: aws s3 sync build/ s3://mars-rover-fe
 
 workflows:

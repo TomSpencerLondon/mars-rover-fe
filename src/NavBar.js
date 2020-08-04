@@ -7,6 +7,9 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(() => ({
   root: {
     marginBottom: '10px'
+  },
+  italic: {
+    fontStyle: "italic"
   }
 }));
 
@@ -17,7 +20,7 @@ const NavBar = () => {
     <AppBar className={classes.root} position="static">
       <Toolbar>
           <Typography variant="h6">
-            Mars Rover - click the square to move the rover!
+            Mars Rover - <span className={classes.italic}>click the square to move the rover!</span>
           </Typography>
       </Toolbar>
     </AppBar>

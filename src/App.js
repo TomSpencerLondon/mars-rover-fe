@@ -167,8 +167,8 @@ function App() {
         </div>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: `repeat(${height}, 20px)`,
-          margin: 25
+          gridTemplateColumns: `repeat(${height}, 40px)`,
+          margin: '25px'
         }}
         >
           { grid.map((rows, i) => rows.map((col, k) => (
@@ -177,8 +177,8 @@ function App() {
               data-x={`${i}`}
               data-y={`${k}`}
               style={{
-                width: 20,
-                height: 20,
+                width: 40,
+                height: 40,
                 backgroundColor: getCellColor(i, k),
                 border: 'solid 1px black'
               }}

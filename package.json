@@ -20,7 +20,7 @@
     "test:coverage": "jest --coverage",
     "build:clean": "rm -rf build/",
     "build:prod": "webpack --config webpack.config.prod.js",
-    "prepush": "yarn lint && yarn build:prod && yarn build:clean",
+    "prepush": "yarn build:prod && yarn build:clean",
     "serve": "http-server ./build"
   },
   "devDependencies": {

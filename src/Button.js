@@ -7,9 +7,9 @@ import RotateRightIcon from '@material-ui/icons/RotateRight';
 const useStyles = makeStyles((theme) => ({
   root: {
     '& > *': {
-      margin: theme.spacing(1),
-    },
-  },
+      margin: theme.spacing(1)
+    }
+  }
 }));
 
 export default function ContainedButtons({ moveRover, moveLeft, moveRight }) {

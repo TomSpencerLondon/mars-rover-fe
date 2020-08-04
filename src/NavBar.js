@@ -9,7 +9,7 @@ const useStyles = makeStyles(() => ({
     marginBottom: '10px'
   },
   italic: {
-    fontStyle: "italic"
+    fontStyle: 'italic'
   }
 }));
 
@@ -19,9 +19,11 @@ const NavBar = () => {
   return (
     <AppBar className={classes.root} position="static">
       <Toolbar>
-          <Typography variant="h6">
-            Mars Rover - <span className={classes.italic}>click the square to move the rover!</span>
-          </Typography>
+        <Typography variant="h6">
+          Mars Rover -
+          {' '}
+          <span className={classes.italic}>click the square to move the rover!</span>
+        </Typography>
       </Toolbar>
     </AppBar>
   );

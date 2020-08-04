@@ -26,21 +26,25 @@ function App() {
 
   const [grid, setGrid] = useState([]);
 
-  useEffect(() => {
-    fetchRoversAndObstacles();
-  }, []);
-
   const fetchRoversAndObstacles = () => {
     let roverResponse;
 
     getRover().then((res) => {
       roverResponse = res;
-    }).then(() => getObstacles()).then((res) => obstacles = res)
+    }).then(() => {
+      return getObstacles();
+    }).then((res) => obstacles = res)
       .then(() => {
         const uiGrid = computeGrid(roverResponse);
         setGrid(uiGrid);
       });
   };
+
+  useEffect(() => {
+    fetchRoversAndObstacles();
+  }, []);
+
+
 
   const uiNewRover = () => {
     postRover().then((res) => {

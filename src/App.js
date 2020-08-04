@@ -26,6 +26,10 @@ function App() {
 
   const [grid, setGrid] = useState([]);
 
+  useEffect(() => {
+    fetchRoversAndObstacles();
+  }, []);
+
   const fetchRoversAndObstacles = () => {
     let roverResponse;
 
@@ -39,12 +43,6 @@ function App() {
         setGrid(uiGrid);
       });
   };
-
-  useEffect(() => {
-    fetchRoversAndObstacles();
-  }, []);
-
-
 
   const uiNewRover = () => {
     postRover().then((res) => {

@@ -12,10 +12,11 @@
     "react-scripts": "3.4.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "webpack-dev-server --config webpack.config.dev.js --port 3000 --history-api-fallback",
+    "lint": "eslint --fix .",
+    "build:clean": "rm -rf build/",
+    "build:prod": "webpack --config webpack.config.prod.js",
+    "prepush": "yarn build:prod && yarn build:clean"
   },
   "eslintConfig": {
     "extends": "react-app"

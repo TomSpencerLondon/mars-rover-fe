@@ -6,6 +6,3 @@
 In order to add a Rover, click on any square on the board. Then click on the square until it is red and click move. To change direction left or right press the grey left arrow or red right arrow.
 
 You can also Clear Grid with the Clear Grid button.
-
-Hope you enjoy!
-
